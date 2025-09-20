@@ -1,10 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import heroImage from '../assets/hero-img.png'
+import tournamentLogo1 from '../assets/featured1.png'
+import tournamentLogo2 from '../assets/featured2.png'
+import tournamentLogo3 from '../assets/featured3.png'
+import tournamentLogo4 from '../assets/featured4.png'
+
 
 
 const Hero = () => {
     return (
+        <>
         <HeroContainer>
             <MainHeadline>
                 WHERE GAMERS<br />
@@ -21,6 +27,31 @@ const Hero = () => {
 
             <HeroImage src={heroImage} alt="Hero Image" />
         </HeroContainer>
+        
+        <FeaturedSection>
+            <SectionTitle>Featured Tournaments</SectionTitle>
+            <TournamentLogos>
+                <TournamentLogo>
+                    <img src={tournamentLogo1} alt="ePremier League" />
+                </TournamentLogo>
+                <TournamentLogo>
+                    <img src={tournamentLogo2} alt="NHL 23 World Championship" />
+                </TournamentLogo>
+                <TournamentLogo>
+                    <img src={tournamentLogo1} alt="ePremier League" />
+                </TournamentLogo>
+                <TournamentLogo>
+                    <img src={tournamentLogo3} alt="ZOTAC CUP" />
+                </TournamentLogo>
+                <TournamentLogo>
+                    <img src={tournamentLogo1} alt="ePremier League" />
+                </TournamentLogo>
+                <TournamentLogo>
+                    <img src={tournamentLogo4} alt="APEX LEGENDS Global Series" />
+                </TournamentLogo>
+            </TournamentLogos>
+        </FeaturedSection>
+        </>
     )
 }
 
@@ -51,6 +82,7 @@ const MainHeadline = styled.h1`
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
+    margin-top: 20px;
   }
   
   @media (max-width: 480px) {
@@ -100,7 +132,7 @@ const HeroImage = styled.img`
   height: 750px;
   object-fit: cover;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  
   margin-top: 40px;
   transition: transform 0.3s ease;
   
@@ -125,6 +157,90 @@ const HeroImage = styled.img`
     border-radius: 10px;
   }
 `
+
+const FeaturedSection = styled.section`
+  width: 100%;
+  padding: 80px 20px;
+  
+  margin-top: 60px;
+  position: relative;
+  z-index: 1;
+`
+
+const SectionTitle = styled.h2`
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  text-align: center;
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
+  }
+`
+
+const TournamentLogos = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  @media (max-width: 1200px) {
+    gap: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    gap: 20px;
+  }
+`
+
+const TournamentLogo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88px;
+  min-width: 120px;
+  background: transparent;
+  border-radius: 12px;
+  padding: 15px 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  img {
+    max-height: 88px;
+    max-width: 120px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    transition: all 0.3s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+  
+  @media (max-width: 768px) {
+    height: 60px;
+    min-width: 100px;
+    padding: 10px 15px;
+    
+    img {
+      max-height: 40px;
+      max-width: 100px;
+    }
+  }
+`
+
+
 
 
 export default Hero

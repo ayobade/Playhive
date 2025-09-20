@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 const NavbarContainer = styled.nav`
@@ -20,6 +20,11 @@ const NavbarContainer = styled.nav`
   width: calc(100% - 40px);
   max-width: 1200px;
   z-index: 10;
+  
+  @media (max-width: 768px) {
+    padding: 12px 20px;
+    width: calc(100% - 20px);
+  }
 `
 
 const Logo = styled.div`
@@ -44,6 +49,10 @@ const NavLinks = styled.ul`
   gap: 40px;
   margin: 0;
   padding: 0;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
 
 const NavLink = styled.li`
@@ -76,9 +85,55 @@ const CTAButton = styled.button`
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(102, 178, 46, 0.3);
   }
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+
+const HamburgerMenu = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`
+
+const HamburgerLine = styled.span`
+  width: 25px;
+  height: 3px;
+  background: #FFFFFF;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  
+  &:nth-child(1) {
+    transform: ${props => props.isOpen ? 'rotate(45deg) translate(6px, 6px)' : 'none'};
+  }
+  
+  &:nth-child(2) {
+    opacity: ${props => props.isOpen ? '0' : '1'};
+  }
+  
+  &:nth-child(3) {
+    transform: ${props => props.isOpen ? 'rotate(-45deg) translate(6px, -6px)' : 'none'};
+  }
 `
 
 const Navbar = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen)
+    }
+
     return (
         <NavbarContainer>
             <Logo>
@@ -94,6 +149,12 @@ const Navbar = () => {
             </NavLinks>
 
             <CTAButton>Join The Hive Now</CTAButton>
+            
+            <HamburgerMenu onClick={toggleMenu}>
+                <HamburgerLine isOpen={isMenuOpen} />
+                <HamburgerLine isOpen={isMenuOpen} />
+                <HamburgerLine isOpen={isMenuOpen} />
+            </HamburgerMenu>
         </NavbarContainer>
     )
 }
