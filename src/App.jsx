@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Navbar from './Components/navbar'
 import Hero from './Components/hero'
+import Body from './Components/body'
 import styled from 'styled-components'
 import overSvg from './assets/over.svg'
 
@@ -52,6 +53,7 @@ function App() {
     <SvgOverlay />
     <Navbar />
     <Hero />
+    <Body />
    </AppContainer>
   );
 }
