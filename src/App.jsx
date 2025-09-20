@@ -3,10 +3,11 @@ import './App.css'
 import Navbar from './Components/navbar'
 import Hero from './Components/hero'
 import styled from 'styled-components'
+import overSvg from './assets/over.svg'
 
 const AppContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #121212 0%, #0F0F0F 50%, #121212 100%);
+  background: #0A0E12;
   background-attachment: fixed;
   position: relative;
   
@@ -18,10 +19,11 @@ const AppContainer = styled.div`
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 20% 80%, rgba(102, 178, 46, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(102, 178, 46, 0.03) 0%, transparent 50%),
-      linear-gradient(45deg, transparent 30%, rgba(102, 178, 46, 0.01) 50%, transparent 70%);
+      radial-gradient(circle at 20% 80%, rgba(102, 178, 46, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(102, 178, 46, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(102, 178, 46, 0.1) 0%, transparent 70%);
     pointer-events: none;
+    z-index: 0;
   }
   
   * {
@@ -29,9 +31,25 @@ const AppContainer = styled.div`
   }
 `
 
+const SvgOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(${overSvg});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.3;
+`
+
 function App() {
   return (
    <AppContainer>
+    <SvgOverlay />
     <Navbar />
     <Hero />
    </AppContainer>
