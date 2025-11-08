@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import heroImage from '../assets/hero-img.png'
+import heroImage from '../assets/Hero-img.png'
 import tournamentLogo1 from '../assets/featured1.png'
 import tournamentLogo2 from '../assets/featured2.png'
 import tournamentLogo3 from '../assets/featured3.png'
