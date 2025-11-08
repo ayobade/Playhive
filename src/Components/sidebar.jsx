@@ -135,7 +135,6 @@ const NavItem = styled(Link)`
   ${props => props.$active && props.$collapsed && `
     margin-left: -20px;
     margin-right: -20px;
-    padding-left: ;
     border-radius: 0;
     width: calc(100% + 40px);
   `}
