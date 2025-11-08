@@ -20,10 +20,11 @@ import tournament02 from '../assets/tournament02.png'
 import live01 from '../assets/live01.png'
 import live02 from '../assets/live02.png'
 import live03 from '../assets/live03.png'
+import Footer from './footer'
 
 const BodyContainer = styled.section`
   padding: 100px 20px;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -1252,6 +1253,8 @@ const Body = () => {
                     </NewsletterForm>
                 </NewsletterCard>
             </NewsletterSection>
+
+            <Footer />
             
             
         </BodyContainer>

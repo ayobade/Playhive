@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
 const NavbarContainer = styled.nav`
@@ -55,12 +56,15 @@ const NavLinks = styled.ul`
   }
 `
 
-const NavLink = styled.li`
+const NavLinkItem = styled.li`
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 500;
-  color: ${props => props.active ? '#66B22E' : '#CCCCCC'};
-  cursor: pointer;
+`
+
+const NavLink = styled(Link)`
+  color: ${props => props.$active ? '#66B22E' : '#CCCCCC'};
+  text-decoration: none;
   transition: color 0.3s ease;
   
   &:hover {
@@ -68,7 +72,7 @@ const NavLink = styled.li`
   }
 `
 
-const CTAButton = styled.button`
+const CTAButton = styled(Link)`
   background: #5C8D30;
   color: #FFFFFF;
   border: none;
@@ -79,6 +83,8 @@ const CTAButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
   
   &:hover {
     background: #66B22E;
@@ -129,6 +135,7 @@ const HamburgerLine = styled.span`
 
 const Navbar = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const location = useLocation()
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen)
@@ -136,19 +143,26 @@ const Navbar = () => {
 
     return (
         <NavbarContainer>
-            <Logo>
-                <span className="play">Play</span>
-                <span className="hive">Hive</span>
-            </Logo>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+                <Logo>
+                    <span className="play">Play</span>
+                    <span className="hive">Hive</span>
+                </Logo>
+            </Link>
             
             <NavLinks>
-                <NavLink active>Home</NavLink>
-                <NavLink>Tournaments</NavLink>
-                <NavLink>Communities</NavLink>
-                <NavLink>About Us</NavLink>
+                <NavLinkItem>
+                    <NavLink to="/" $active={location.pathname === '/'}>Home</NavLink>
+                </NavLinkItem>
+                <NavLinkItem>
+                    <NavLink to="/tournaments" $active={location.pathname === '/tournaments'}>Tournaments</NavLink>
+                </NavLinkItem>
+                <NavLinkItem>
+                    <NavLink to="/about" $active={location.pathname === '/about'}>About Us</NavLink>
+                </NavLinkItem>
             </NavLinks>
 
-            <CTAButton>Join The Hive Now</CTAButton>
+            <CTAButton to="/signup">Join The Hive Now</CTAButton>
             
             <HamburgerMenu onClick={toggleMenu}>
                 <HamburgerLine isOpen={isMenuOpen} />

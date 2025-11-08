@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import heroImage from '../assets/hero-img.png'
 import tournamentLogo1 from '../assets/featured1.png'
@@ -23,7 +24,7 @@ const Hero = () => {
                 Host Tournaments, Compete, Live Stream, And Grow Your Gaming Community—All In One Place!
             </Description>
             
-            <CTAButton>Join The Hive Now</CTAButton>
+            <CTAButton to="/signup">Join The Hive Now</CTAButton>
 
             <HeroImage src={heroImage} alt="Hero Image" />
         </HeroContainer>
@@ -108,7 +109,7 @@ const Description = styled.p`
   }
 `
 
-const CTAButton = styled.button`
+const CTAButton = styled(Link)`
   background: #5C8D30;
   color: #FFFFFF;
   border: none;
@@ -119,6 +120,8 @@ const CTAButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
   
   &:hover {
     background: #66B22E;

@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Navbar from './Components/navbar'
-import Hero from './Components/hero'
-import Body from './Components/body'
+import Home from './pages/home'
+import Tournaments from './pages/tournaments'
+import Signup from './pages/signup'
+import Login from './pages/login'
+import Dashboard from './pages/dashboard'
 import styled from 'styled-components'
 import overSvg from './assets/over.svg'
+
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -49,12 +52,18 @@ const SvgOverlay = styled.div`
 
 function App() {
   return (
-   <AppContainer>
-    <SvgOverlay />
-    <Navbar />
-    <Hero />
-    <Body />
-   </AppContainer>
+    <Router>
+      <AppContainer>
+        <SvgOverlay />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tournaments" element={<Tournaments />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </AppContainer>
+    </Router>
   );
 }
 
