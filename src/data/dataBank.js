@@ -10,6 +10,15 @@ import game07 from '../assets/game07.png'
 import game08 from '../assets/game08.png'
 import game09 from '../assets/game09.png'
 import game10 from '../assets/game10.png'
+import live01 from '../assets/live01.png'
+import live02 from '../assets/live02.png'
+import live03 from '../assets/live03.png'
+import community01 from '../assets/community01.png'
+import community02 from '../assets/community02.png'
+import community03 from '../assets/community03.png'
+import community04 from '../assets/community04.png'
+import community05 from '../assets/community05.png'
+import community06 from '../assets/community06.png'
 
 export const tournamentsData = [
     { id: 1, image: tournament01, game: 'Call of Duty', region: 'North America', prizePoolValue: 30000, gameType: 'Online', title: 'Call of Duty - Modern Warfare Reimagined', matchType: '4 x 4 Team Matches', date: 'Jan 19, 12:00 PM', teams: { current: 10, total: 25 }, entry: 'Free entry' },
@@ -30,5 +39,23 @@ export const tournamentsData = [
     { id: 16, image: game04, game: 'Apex Legends', region: 'Oceania', prizePoolValue: 18000, gameType: 'Online', title: 'Apex Legends - Oceanic Series', matchType: '3 x 3 Squad Matches', date: 'Feb 4, 6:00 PM', teams: { current: 7, total: 18 }, entry: 'Free entry' },
     { id: 17, image: game05, game: 'UFC', region: 'Africa', prizePoolValue: 32000, gameType: 'Offline', title: 'UFC - African Championship', matchType: '1v1 Matches', date: 'Feb 5, 11:00 AM', teams: { current: 10, total: 16 }, entry: '$40 entry' },
     { id: 18, image: game06, game: 'Modern Strike', region: 'Asia', prizePoolValue: 65000, gameType: 'Online', title: 'Modern Strike - Asian Pro League', matchType: '5 x 5 Team Matches', date: 'Feb 6, 3:00 PM', teams: { current: 17, total: 26 }, entry: 'Free entry' }
+]
+
+export const livestreamsData = [
+    { id: 1, thumbnail: live01, streamer: 'Bobby Swagger', title: 'FC25 – FC Pro Open match week 5 Reimagined', viewers: '10,000', alt: 'FC25 stream' },
+    { id: 2, thumbnail: live02, streamer: 'Bobby Swagger', title: 'Call of Duty – Mordern Warfare Reimagined', viewers: '10,000', alt: 'Call of Duty stream' },
+    { id: 3, thumbnail: live03, streamer: 'Bobby Swagger', title: 'FC25 – FC Pro Open match week 5 Reimagined', viewers: '10,000', alt: 'Apex stream' },
+    { id: 4, thumbnail: live01, streamer: 'Alex Turner', title: 'Valorant – Champions Tour Finals', viewers: '25,000', alt: 'Valorant stream' },
+    { id: 5, thumbnail: live02, streamer: 'Sophia Lee', title: 'Apex Legends – Global Championship', viewers: '18,500', alt: 'Apex Legends stream' },
+    { id: 6, thumbnail: live03, streamer: 'Marcus Johnson', title: 'UFC 25 – Championship Match', viewers: '12,000', alt: 'UFC stream' }
+]
+
+export const communitiesData = [
+    { id: 1, logo: community01, logoText: 'ORLANDO PIANO COLLECTIVE', logoBgColor: '#FFFFFF', logoBorderColor: null, title: 'COD - Battlegrounds Reimagined', game: 'Fortnite', members: '10k members' },
+    { id: 2, logo: community02, logoText: 'KETCHUP STUDIOS', logoBgColor: '#DC2626', logoBorderColor: '#FFFFFF', title: 'COD - Battlegrounds Reimagined', game: 'Fortnite', members: '10k members' },
+    { id: 3, logo: community03, logoText: 'GAMING ELITE', logoBgColor: '#2E3440', logoBorderColor: null, title: 'Valorant - Champions League', game: 'Valorant', members: '25k members' },
+    { id: 4, logo: community04, logoText: 'PRO PLAYERS', logoBgColor: '#1A2E2E', logoBorderColor: null, title: 'Apex Legends - Battle Royale', game: 'Apex Legends', members: '15k members' },
+    { id: 5, logo: community05, logoText: 'ESPORTS HUB', logoBgColor: '#4A5568', logoBorderColor: null, title: 'FC25 - World Championship', game: 'FC25', members: '30k members' },
+    { id: 6, logo: community06, logoText: 'TOURNAMENT MASTERS', logoBgColor: '#66B22E', logoBorderColor: null, title: 'UFC 25 - Championship Series', game: 'UFC', members: '8k members' }
 ]
 

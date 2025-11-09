@@ -19,14 +19,19 @@ const SidebarContainer = styled.aside`
   left: 0;
   top: 0;
   padding: 30px 0;
-  z-index: 100;
+  z-index: 180;
   overflow-y: auto;
-  transition: width 0.3s ease;
+  transition: transform 0.3s ease, width 0.3s ease;
+  
+  @media (max-width: 1200px) {
+    transform: ${props => props.$isOpen ? 'translateX(0)' : 'translateX(-100%)'};
+    width: 280px;
+    z-index: 250;
+  }
   
   @media (max-width: 768px) {
     width: 100%;
-    height: auto;
-    position: relative;
+    max-width: 320px;
   }
 `
 
@@ -339,13 +344,63 @@ const ChevronLeftIcon = () => (
   </svg>
 )
 
-const Sidebar = ({ collapsed, onToggle }) => {
+const CloseButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  
+  @media (max-width: 1200px) {
+    display: flex;
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: #FFFFFF;
+  }
+`
+
+const CloseIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+)
+
+const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
     const location = useLocation()
     const [showSubscriptions, setShowSubscriptions] = useState(false)
 
+    const handleToggle = () => {
+        // On smaller screens (< 1200px), the toggle button should close the sidebar
+        // On larger screens, it toggles the collapsed state
+        const isSmallScreen = window.innerWidth <= 1200
+        if (isSmallScreen && onClose) {
+            onClose()
+        } else {
+            onToggle()
+        }
+    }
+
     return (
-        <SidebarContainer $collapsed={collapsed}>
-            <ToggleButton $collapsed={collapsed} onClick={onToggle}>
+        <SidebarContainer $collapsed={collapsed} $isOpen={isOpen}>
+            <ToggleButton $collapsed={collapsed} onClick={handleToggle}>
                 <ChevronLeftIcon />
             </ToggleButton>
             

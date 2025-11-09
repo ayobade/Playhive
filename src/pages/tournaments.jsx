@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import Navbar from '../Components/navbar'
 import Footer from '../Components/footer'
-import { tournamentsData } from '../data/tournamentsData'
+import { tournamentsData } from '../data/dataBank'
 
 const TournamentsContainer = styled.div`
   padding: 180px 20px 80px 20px;

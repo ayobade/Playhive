@@ -15,10 +15,15 @@ const RightSidebarContainer = styled.aside`
   right: 0;
   top: 0;
   padding: 30px 0;
-  z-index: 100;
+  z-index: 180;
   gap: 24px;
+  transition: transform 0.3s ease;
   
-  @media (max-width: 768px) {
+  @media (min-width: 1201px) {
+    transform: translateX(0);
+  }
+  
+  @media (max-width: 1200px) {
     display: none;
   }
 `
@@ -111,9 +116,48 @@ const NotificationBadge = styled.span`
   z-index: 1;
 `
 
-const RightSidebar = () => {
+const CloseButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  
+  @media (max-width: 1200px) {
+    display: flex;
+  }
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  svg {
+    width: 18px;
+    height: 18px;
+    stroke: #FFFFFF;
+  }
+`
+
+const CloseIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <line x1="18" y1="6" x2="6" y2="18"/>
+    <line x1="6" y1="6" x2="18" y2="18"/>
+  </svg>
+)
+
+const RightSidebar = ({ isOpen = true, onClose }) => {
     return (
-        <RightSidebarContainer>
+        <RightSidebarContainer $isOpen={isOpen}>
             <UserAvatar>
                 <AvatarImage />
             </UserAvatar>
