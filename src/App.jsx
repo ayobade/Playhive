@@ -5,6 +5,10 @@ import Tournaments from './pages/tournaments'
 import Signup from './pages/signup'
 import Login from './pages/login'
 import Dashboard from './pages/dashboard'
+import AllTournament from './pages/allTournament'
+import Organization from './pages/organization'
+import Community from './pages/community'
+import Streams from './pages/streams'
 import styled from 'styled-components'
 import overSvg from './assets/over.svg'
 
@@ -61,6 +65,10 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/allTournament" element={<AllTournament />} />
+          <Route path="/organization" element={<Organization />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/streams" element={<Streams />} />
         </Routes>
       </AppContainer>
     </Router>

@@ -12,7 +12,8 @@ const LiveCard = styled.div`
   transition: all 0.3s ease;
   cursor: pointer;
   max-width: 360px;
-  width: 100%;
+  flex: 1 1 calc((100% - 48px) / 3);
+  min-width: 280px;
   
   &:hover {
     transform: translateY(-5px);
@@ -32,8 +33,12 @@ const LiveCard = styled.div`
     filter: blur(80px);
     mix-blend-mode: screen;
   }
-
- 
+  
+  @media (max-width: 640px) {
+    max-width: 100%;
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
 `
 
 const ImageWrapper = styled.div`

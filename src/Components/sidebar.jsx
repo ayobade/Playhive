@@ -419,12 +419,12 @@ const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
                     <IconImage src={homeIcon} alt="Home" $active={location.pathname === '/dashboard'} />
                     <span>Home</span>
                 </NavItem>
-                <NavItem to="/tournaments" $active={location.pathname === '/tournaments'} $collapsed={collapsed}>
-                    <IconImage src={tournamentIcon} alt="Tournaments" $active={location.pathname === '/tournaments'} />
+                <NavItem to="/allTournament" $active={location.pathname === '/allTournament'} $collapsed={collapsed}>
+                    <IconImage src={tournamentIcon} alt="Tournaments" $active={location.pathname === '/allTournament'} />
                     <span>Tournaments</span>
                 </NavItem>
-                <NavItem to="/organizations" $active={location.pathname === '/organizations'} $collapsed={collapsed}>
-                    <IconImage src={organizationsIcon} alt="Organizations" $active={location.pathname === '/organizations'} />
+                <NavItem to="/organization" $active={location.pathname === '/organization'} $collapsed={collapsed}>
+                    <IconImage src={organizationsIcon} alt="Organizations" $active={location.pathname === '/organization'} />
                     <span>Organizations</span>
                 </NavItem>
                 <NavItem to="/community" $active={location.pathname === '/community'} $collapsed={collapsed}>

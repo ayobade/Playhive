@@ -10,9 +10,11 @@ import cod from '../assets/COD.png'
 import searchIcon from '../assets/search.svg'
 import chatIcon from '../assets/chat.svg'
 import notificationIcon from '../assets/notification.svg'
+import filterIcon from '../assets/filter.svg'
 import { tournamentsData, livestreamsData, communitiesData } from '../data/dataBank'
 import LivestreamCard from '../Components/livestreamcard'
 import CommunityCard from '../Components/communitycard'
+import TournamentFilters from '../Components/TournamentFilters'
 
 const DashboardLayout = styled.div`
   display: flex;
@@ -181,7 +183,13 @@ const MainContent = styled.main`
   padding: 40px;
   height: 100vh;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   transition: margin-left 0.3s ease, margin-right 0.3s ease;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
   
   @media (max-width: 1200px) {
     margin-left: 0;
@@ -558,6 +566,12 @@ const TopFiltersBar = styled.div`
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 100;
   
+  @media (max-width: 1200px) {
+    z-index: 80; /* below header (100) but above content */
+    top: 4px;
+  
+  }
+  
   @media (max-width: 768px) {
     position: relative;
     top: 0;
@@ -576,7 +590,7 @@ const TopFilterItem = styled.div`
   gap: 12px;
   padding: 0 24px;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
   
   &:first-child {
     padding-left: 0;
@@ -598,7 +612,7 @@ const TopFilterItem = styled.div`
   }
   
   &:hover {
-    opacity: 0.8;
+    opacity: 1;
   }
   
   @media (max-width: 768px) {
@@ -661,11 +675,13 @@ const TopDropdownMenu = styled.div`
   top: calc(100% + 12px);
   left: 0;
   min-width: 200px;
-  background: #1A1F26;
+  background: #151A1F; /* solid, non-transparent */
   border: 1px solid #66B22E;
   border-radius: 8px;
   padding: 8px 0;
-  z-index: 200;
+  z-index: 300; /* ensure in front of page content */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   max-height: 200px;
   overflow-y: auto;
   display: ${props => props.$isOpen ? 'block' : 'none'};
@@ -718,6 +734,23 @@ const SectionTitle = styled.h2`
   }
 `
 
+const SectionHeader = styled.div`
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  
+  @media (max-width: 768px) {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+`
+
 const FiltersContainer = styled.div`
   display: flex;
   align-items: center;
@@ -734,6 +767,10 @@ const FiltersContainer = styled.div`
 const FilterDropdown = styled.div`
   position: relative;
   min-width: 180px;
+  
+  @media (max-width: 1200px) {
+    display: none;
+  }
   
   @media (max-width: 768px) {
     width: 100%;
@@ -811,6 +848,141 @@ const DropdownMenu = styled.div`
   }
 `
 
+const MobileFiltersWrapper = styled.div`
+  position: relative;
+  display: none;
+  
+  @media (max-width: 1200px) {
+    display: block;
+  }
+`
+
+const MobileFiltersToggle = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  img {
+    width: 48px;
+    height: 48px;
+    display: block;
+  }
+`
+
+const MobileFiltersMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  background: #151A1F;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  z-index: 200;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+`
+
+const MobileGroupTitle = styled.div`
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  opacity: 0.7;
+  margin: 14px 4px 8px;
+`
+
+const MobileFiltersTitle = styled.div`
+  color: #FFFFFF;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 2px 4px 6px;
+`
+
+const MobileOptionRow = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  
+  &:hover {
+    background: rgba(102, 178, 46, 0.08);
+    border-color: rgba(102, 178, 46, 0.25);
+  }
+`
+
+const CheckBox = styled.span`
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid ${props => props.$checked ? '#66B22E' : 'rgba(255, 255, 255, 0.25)'};
+  background: ${props => props.$checked ? '#66B22E' : 'transparent'};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  svg {
+    width: 12px;
+    height: 12px;
+    fill: #0A0E12;
+    display: ${props => props.$checked ? 'block' : 'none'};
+  }
+`
+
+const MobileActions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+`
+
+const ClearAllButton = styled.button`
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #D1D5DB;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover { opacity: 0.9; }
+`
+
+const ApplyButton = styled.button`
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  background: #66B22E;
+  border: 1px solid #66B22E;
+  color: #0A0E12;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  
+  &:active { transform: scale(0.98); }
+`
+
 const DropdownItem = styled.button`
   width: 100%;
   padding: 10px 16px;
@@ -824,11 +996,11 @@ const DropdownItem = styled.button`
   transition: background 0.2s ease;
   
   &:hover {
-    background: rgba(102, 178, 46, 0.2);
+    background: #243022;
   }
   
   ${props => props.$isSelected && `
-    background: rgba(102, 178, 46, 0.3);
+    background: #30442b;
     color: #66B22E;
     font-weight: 600;
   `}
@@ -860,7 +1032,8 @@ const TournamentCard = styled.div`
   transition: all 0.3s ease;
   cursor: pointer;
   max-width: 360px;
-  width: 100%;
+  flex: 1 1 calc((100% - 48px) / 3);
+  min-width: 280px;
   
   &:hover {
     transform: translateY(-5px);
@@ -881,6 +1054,12 @@ const TournamentCard = styled.div`
     filter: blur(40px);
     mix-blend-mode: screen;
     z-index: 0;
+  }
+  
+  @media (max-width: 640px) {
+    max-width: 100%;
+    min-width: 100%;
+    flex: 1 1 100%;
   }
 `
 
@@ -1018,12 +1197,6 @@ const LiveStreamsHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 32px;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
 `
 
 const LiveStreamsTitle = styled.h2`
@@ -1038,47 +1211,38 @@ const LiveStreamsTitle = styled.h2`
   }
 `
 
-const NavigationButtons = styled.div`
-  display: flex;
-  gap: 12px;
-`
-
-const NavButton = styled.button`
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  border: none;
-  display: flex;
+const ViewAllButton = styled.button`
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 9999px;
+  border: 1px solid #66B22E;
+  background: rgba(102, 178, 46, 0.15);
+  color: #66B22E;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.3s ease;
   
-  ${props => props.$direction === 'left' ? `
-    background: #5C8D30;
-    opacity: 0.6;
-    
-    &:hover {
-      background: #5C8D30;
-      transform: scale(1.05);
-    }
-  ` : `
-    background: #66B22E;
-    
-    &:hover {
-      background: #66B22E;
-      transform: scale(1.05);
-    }
-  `}
-  
-  &:active {
-    transform: scale(0.95);
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
   }
   
-  svg {
-    width: 20px;
-    height: 20px;
-    fill: ${props => props.$direction === 'left' ? '#CCCCCC' : '#FFFFFF'};
+  &:hover {
+    background: #66B22E;
+    color: #0A0E12;
+  }
+  
+  &:active {
+    transform: scale(0.97);
+  }
+  
+  @media (max-width: 768px) {
+    align-self: flex-start;
   }
 `
 
@@ -1104,12 +1268,6 @@ const CommunitiesHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 32px;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-  }
 `
 
 const CommunitiesTitle = styled.h2`
@@ -1128,6 +1286,18 @@ const CommunitiesGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
+  
+  > * {
+    flex: 1 1 calc((100% - 24px) / 2);
+    max-width: calc((100% - 24px) / 2);
+  }
+  
+  @media (max-width: 965px) {
+    > * {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
   
   @media (max-width: 640px) {
     flex-direction: column;
@@ -1200,6 +1370,8 @@ const DashboardPage = () => {
     const gameTypeOptions = ['All Types', 'Solo', 'Duo', 'Squad', 'Team']
 
     const dropdownRef = useRef(null)
+    const mobileFiltersRef = useRef(null)
+    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -1216,6 +1388,20 @@ const DashboardPage = () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [openDropdown])
+    
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (mobileFiltersRef.current && !mobileFiltersRef.current.contains(event.target)) {
+                setMobileFiltersOpen(false)
+            }
+        }
+        if (mobileFiltersOpen) {
+            document.addEventListener('mousedown', handleClickOutside)
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [mobileFiltersOpen])
 
     return (
         <DashboardLayout>
@@ -1387,86 +1573,19 @@ const DashboardPage = () => {
                 
                 <FiltersWrapper>
                     <FindTournamentsSection>
-                    <SectionTitle>Find Tournaments</SectionTitle>
-                    <FiltersContainer>
-                        <FilterDropdown>
-                            <FilterButton 
-                                $isOpen={openDropdown === 'date'}
-                                onClick={() => toggleDropdown('date')}
-                            >
-                                {selectedFilters.date}
-                                <ChevronIcon 
-                                    $isOpen={openDropdown === 'date'}
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M7 10l5 5 5-5z"/>
-                                </ChevronIcon>
-                            </FilterButton>
-                            <DropdownMenu $isOpen={openDropdown === 'date'}>
-                                {dateOptions.map((option) => (
-                                    <DropdownItem
-                                        key={option}
-                                        $isSelected={selectedFilters.date === option}
-                                        onClick={() => handleFilterSelect('date', option)}
-                                    >
-                                        {option}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </FilterDropdown>
-                        
-                        <FilterDropdown>
-                            <FilterButton 
-                                $isOpen={openDropdown === 'prizePool'}
-                                onClick={() => toggleDropdown('prizePool')}
-                            >
-                                {selectedFilters.prizePool}
-                                <ChevronIcon 
-                                    $isOpen={openDropdown === 'prizePool'}
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M7 10l5 5 5-5z"/>
-                                </ChevronIcon>
-                            </FilterButton>
-                            <DropdownMenu $isOpen={openDropdown === 'prizePool'}>
-                                {prizePoolOptions.map((option) => (
-                                    <DropdownItem
-                                        key={option}
-                                        $isSelected={selectedFilters.prizePool === option}
-                                        onClick={() => handleFilterSelect('prizePool', option)}
-                                    >
-                                        {option}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </FilterDropdown>
-                        
-                        <FilterDropdown>
-                            <FilterButton 
-                                $isOpen={openDropdown === 'gameType'}
-                                onClick={() => toggleDropdown('gameType')}
-                            >
-                                {selectedFilters.gameType}
-                                <ChevronIcon 
-                                    $isOpen={openDropdown === 'gameType'}
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path d="M7 10l5 5 5-5z"/>
-                                </ChevronIcon>
-                            </FilterButton>
-                            <DropdownMenu $isOpen={openDropdown === 'gameType'}>
-                                {gameTypeOptions.map((option) => (
-                                    <DropdownItem
-                                        key={option}
-                                        $isSelected={selectedFilters.gameType === option}
-                                        onClick={() => handleFilterSelect('gameType', option)}
-                                    >
-                                        {option}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        </FilterDropdown>
-                    </FiltersContainer>
+                    <SectionHeader>
+                        <SectionTitle>Find Tournaments</SectionTitle>
+                        <TournamentFilters 
+                            value={{
+                                date: selectedFilters.date,
+                                prizePool: selectedFilters.prizePool,
+                                gameType: selectedFilters.gameType
+                            }}
+                            onChange={(filters) => {
+                                setSelectedFilters(prev => ({ ...prev, ...filters }))
+                            }}
+                        />
+                    </SectionHeader>
                 </FindTournamentsSection>
                 </FiltersWrapper>
                 
@@ -1502,18 +1621,12 @@ const DashboardPage = () => {
                 <LiveStreamsSection>
                     <LiveStreamsHeader>
                         <LiveStreamsTitle>LiveStreams</LiveStreamsTitle>
-                        <NavigationButtons>
-                            <NavButton $direction="left">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                                </svg>
-                            </NavButton>
-                            <NavButton $direction="right">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                                </svg>
-                            </NavButton>
-                        </NavigationButtons>
+                <ViewAllButton>
+                    View All
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </ViewAllButton>
                     </LiveStreamsHeader>
                     <LiveStreamsGrid>
                         {livestreamsData.slice(0, 3).map((stream) => (
@@ -1532,18 +1645,12 @@ const DashboardPage = () => {
                 <CommunitiesSection>
                     <CommunitiesHeader>
                         <CommunitiesTitle>Communities</CommunitiesTitle>
-                        <NavigationButtons>
-                            <NavButton $direction="left">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                                </svg>
-                            </NavButton>
-                            <NavButton $direction="right">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                                </svg>
-                            </NavButton>
-                        </NavigationButtons>
+                <ViewAllButton>
+                    View All
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </ViewAllButton>
                     </CommunitiesHeader>
                     <CommunitiesGrid>
                         {communitiesData.slice(0, 6).map((community) => (
