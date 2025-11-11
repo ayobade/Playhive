@@ -6,6 +6,8 @@ import MobileHeader from '../Components/MobileHeader'
 import { tournamentsData } from '../data/dataBank'
 import TournamentCard from '../Components/tournamentcard'
 import TournamentFilters from '../Components/TournamentFilters'
+import { useSidebarState } from '../hooks/useSidebarState'
+import CreateTournamentModal from '../Components/CreateTournamentModal'
 
 const Layout = styled.div`
   display: flex;
@@ -232,22 +234,37 @@ const Chip = styled.div`
   color: #FFFFFF;
 `
 const AllTournament = () => {
-  const [collapsed, setCollapsed] = useState(false)
-  const [leftOpen, setLeftOpen] = useState(false)
+  const {
+    sidebarCollapsed: collapsed,
+    toggleCollapsed,
+    leftSidebarOpen: leftOpen,
+    openLeft,
+    closeLeft
+  } = useSidebarState()
   const [activeTab, setActiveTab] = useState('all')
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const toggleSidebar = () => setCollapsed(!collapsed)
-  const closeSidebars = () => setLeftOpen(false)
+  const toggleSidebar = () => toggleCollapsed()
+  const closeSidebars = () => closeLeft()
+
+  const handleCreateTournament = () => {
+    setIsModalOpen(false)
+  }
 
   return (
     <Layout>
-      <MobileHeader onMenuClick={() => setLeftOpen(true)} />
+      <CreateTournamentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreateTournament}
+      />
+      <MobileHeader onMenuClick={() => openLeft()} />
       <Sidebar collapsed={collapsed} onToggle={toggleSidebar} isOpen={leftOpen} onClose={closeSidebars} />
       <Main $collapsed={collapsed}>
         <PageHeader>
           <Title>Tournaments</Title>
           <Actions>
-            <CreateBtn>+ Create Tournament</CreateBtn>
+            <CreateBtn onClick={() => setIsModalOpen(true)}>+ Create Tournament</CreateBtn>
           </Actions>
         </PageHeader>
         <Tabs>

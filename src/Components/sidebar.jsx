@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import homeIcon from '../assets/home.svg'
@@ -184,21 +184,7 @@ const IconImage = styled.img`
   transition: all 0.3s ease;
 `
 
-const DropdownIcon = styled.span`
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  opacity: ${props => props.$collapsed ? '0' : '1'};
-  width: ${props => props.$collapsed ? '0' : 'auto'};
-  overflow: hidden;
-  transition: opacity 0.3s ease, width 0.3s ease;
-  
-  svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-  }
-`
+// removed unused dropdown icon for subscriptions
 
 const CTACard = styled.div`
   background: #66B22E;
@@ -385,7 +371,6 @@ const CloseIcon = () => (
 
 const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
     const location = useLocation()
-    const [showSubscriptions, setShowSubscriptions] = useState(false)
 
     const handleToggle = () => {
         // On smaller screens (< 1200px), the toggle button should close the sidebar
@@ -415,27 +400,27 @@ const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
             </CollapsedLogo>
             
             <NavList>
-                <NavItem to="/dashboard" $active={location.pathname === '/dashboard'} $collapsed={collapsed}>
+                <NavItem to="/dashboard" $active={location.pathname === '/dashboard'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
                     <IconImage src={homeIcon} alt="Home" $active={location.pathname === '/dashboard'} />
                     <span>Home</span>
                 </NavItem>
-                <NavItem to="/allTournament" $active={location.pathname === '/allTournament'} $collapsed={collapsed}>
+                <NavItem to="/allTournament" $active={location.pathname === '/allTournament'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
                     <IconImage src={tournamentIcon} alt="Tournaments" $active={location.pathname === '/allTournament'} />
                     <span>Tournaments</span>
                 </NavItem>
-                <NavItem to="/organization" $active={location.pathname === '/organization'} $collapsed={collapsed}>
+                <NavItem to="/organization" $active={location.pathname === '/organization'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
                     <IconImage src={organizationsIcon} alt="Organizations" $active={location.pathname === '/organization'} />
                     <span>Organizations</span>
                 </NavItem>
-                <NavItem to="/community" $active={location.pathname === '/community'} $collapsed={collapsed}>
+                <NavItem to="/community" $active={location.pathname === '/community'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
                     <IconImage src={communityIcon} alt="Community" $active={location.pathname === '/community'} />
                     <span>Community</span>
                 </NavItem>
-                <NavItem to="/leaderboard" $active={location.pathname === '/leaderboard'} $collapsed={collapsed}>
+                <NavItem to="/leaderboard" $active={location.pathname === '/leaderboard'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
                     <IconImage src={leaderboardIcon} alt="Leaderboard" $active={location.pathname === '/leaderboard'} />
                     <span>Leaderboard</span>
                 </NavItem>
-                <NavItem to="/streams" $active={location.pathname === '/streams'} $collapsed={collapsed}>
+                <NavItem to="/streams" $active={location.pathname === '/streams'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
                     <IconImage src={streamsIcon} alt="Streams" $active={location.pathname === '/streams'} />
                     <span>Streams</span>
                 </NavItem>
@@ -443,16 +428,10 @@ const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
                     to="/subscriptions" 
                     $active={location.pathname === '/subscriptions'}
                     $collapsed={collapsed}
-                    onClick={(e) => {
-                        e.preventDefault()
-                        setShowSubscriptions(!showSubscriptions)
-                    }}
+                    onClick={() => onClose && onClose()}
                 >
                     <IconImage src={subscriptionsIcon} alt="Subscriptions" $active={location.pathname === '/subscriptions'} />
                     <span>Subscriptions</span>
-                    <DropdownIcon $collapsed={collapsed}>
-                        <ChevronDownIcon />
-                    </DropdownIcon>
                 </NavItem>
             </NavList>
             

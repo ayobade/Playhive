@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Sidebar from '../Components/sidebar'
 import RightSidebar from '../Components/rightSidebar'
 import MobileHeader from '../Components/MobileHeader'
+import { useSidebarState } from '../hooks/useSidebarState'
 
 const Layout = styled.div`
   display: flex;
@@ -41,15 +42,20 @@ const PageTitle = styled.h1`
 `
 
 const Community = () => {
-  const [collapsed, setCollapsed] = useState(false)
-  const [leftOpen, setLeftOpen] = useState(false)
+  const {
+    sidebarCollapsed: collapsed,
+    toggleCollapsed,
+    leftSidebarOpen: leftOpen,
+    openLeft,
+    closeLeft
+  } = useSidebarState()
 
-  const toggleSidebar = () => setCollapsed(!collapsed)
-  const closeSidebars = () => setLeftOpen(false)
+  const toggleSidebar = () => toggleCollapsed()
+  const closeSidebars = () => closeLeft()
 
   return (
     <Layout>
-      <MobileHeader onMenuClick={() => setLeftOpen(true)} />
+      <MobileHeader onMenuClick={() => openLeft()} />
       <Sidebar collapsed={collapsed} onToggle={toggleSidebar} isOpen={leftOpen} onClose={closeSidebars} />
       <Main $collapsed={collapsed}>
         <PageTitle>Community</PageTitle>

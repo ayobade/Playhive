@@ -158,9 +158,17 @@ const TournamentFilters = ({ value, onChange }) => {
     setFilters(value)
   }, [value?.date, value?.prizePool, value?.gameType])
 
+  const isEqualToProp = (a, b) => {
+    if (!b) return false
+    return a.date === b.date && a.prizePool === b.prizePool && a.gameType === b.gameType
+  }
+
   useEffect(() => {
-    if (onChange) onChange(filters)
-  }, [filters, onChange])
+    if (!onChange) return
+    // Avoid feedback loop: if our internal state matches the controlled prop, don't emit
+    if (isEqualToProp(filters, value)) return
+    onChange(filters)
+  }, [filters, onChange, value?.date, value?.prizePool, value?.gameType])
 
   const selectFilter = (type, value) => {
     setFilters(prev => ({ ...prev, [type]: value }))

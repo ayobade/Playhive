@@ -9,6 +9,8 @@ import AllTournament from './pages/allTournament'
 import Organization from './pages/organization'
 import Community from './pages/community'
 import Streams from './pages/streams'
+import Leaderboard from './pages/leaderboard'
+import Subscriptions from './pages/subscriptions'
 import styled from 'styled-components'
 import overSvg from './assets/over.svg'
 
@@ -69,6 +71,8 @@ function App() {
           <Route path="/organization" element={<Organization />} />
           <Route path="/community" element={<Community />} />
           <Route path="/streams" element={<Streams />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/subscriptions" element={<Subscriptions />} />
         </Routes>
       </AppContainer>
     </Router>

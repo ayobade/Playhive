@@ -15,6 +15,7 @@ import { tournamentsData, livestreamsData, communitiesData } from '../data/dataB
 import LivestreamCard from '../Components/livestreamcard'
 import CommunityCard from '../Components/communitycard'
 import TournamentFilters from '../Components/TournamentFilters'
+import { useSidebarState } from '../hooks/useSidebarState'
 
 const DashboardLayout = styled.div`
   display: flex;
@@ -679,7 +680,7 @@ const TopDropdownMenu = styled.div`
   border: 1px solid #66B22E;
   border-radius: 8px;
   padding: 8px 0;
-  z-index: 300; /* ensure in front of page content */
+  z-index: 120; /* keep below global sidebar (180/250) to prevent click blocking */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   max-height: 200px;
@@ -883,7 +884,7 @@ const MobileFiltersMenu = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 16px;
-  z-index: 200;
+  z-index: 120;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 `
 
@@ -1305,8 +1306,15 @@ const CommunitiesGrid = styled.div`
 `
 
 const DashboardPage = () => {
-    const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-    const [leftSidebarOpen, setLeftSidebarOpen] = useState(false)
+    const {
+        sidebarCollapsed,
+        setSidebarCollapsed,
+        leftSidebarOpen,
+        setLeftSidebarOpen,
+        toggleCollapsed,
+        closeLeft,
+        toggleLeft
+    } = useSidebarState()
     const [rightSidebarOpen, setRightSidebarOpen] = useState(false)
     const [currentIndex, setCurrentIndex] = useState(0)
     const [openDropdown, setOpenDropdown] = useState(null)
@@ -1320,11 +1328,11 @@ const DashboardPage = () => {
     })
 
     const toggleSidebar = () => {
-        setSidebarCollapsed(!sidebarCollapsed)
+        toggleCollapsed()
     }
 
     const toggleLeftSidebar = () => {
-        setLeftSidebarOpen(!leftSidebarOpen)
+        toggleLeft()
     }
 
     const toggleRightSidebar = () => {
@@ -1332,7 +1340,7 @@ const DashboardPage = () => {
     }
 
     const closeSidebars = () => {
-        setLeftSidebarOpen(false)
+        closeLeft()
         setRightSidebarOpen(false)
     }
 
