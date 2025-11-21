@@ -27,7 +27,7 @@ const LiveCard = styled.div`
     top: 55%;
     transform: translate(-50%, -50%);
     width: 300%;
-    height: 200%;
+    height: 100%;
     pointer-events: none;
     background: radial-gradient(50% 50% at 50% 50%, rgba(75, 93, 54, 0.5) 0%, rgba(75, 93, 54, 0.25) 40%, rgba(75, 93, 54, 0.0) 70%);
     filter: blur(80px);
@@ -44,7 +44,7 @@ const LiveCard = styled.div`
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 100%;
   overflow: hidden;
   z-index: 1;
   line-height: 0;
@@ -68,12 +68,12 @@ const LiveBadge = styled.div`
   position: absolute;
   top: 12px;
   right: 12px;
-  background: #E11D48;
+  background:rgb(255, 0, 0);
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   font-size: 0.85rem;
   font-weight: 700;
-  padding: 6px 12px;
+  padding: 12px 12px;
   border-radius: 9999px;
   z-index: 5;
 `
@@ -82,12 +82,13 @@ const LiveInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 16px 20px 20px 20px;
+  padding: 16px 20px 0px 20px;
   background: rgba(21, 26, 31, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   margin-top: 0;
+  height: 100%;
 `
 
 const LiveStreamer = styled.div`
@@ -112,8 +113,8 @@ const LiveTitleText = styled.h3`
   margin: 0;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 1.4rem;
+  font-weight: 600;
+  font-size: 1.1rem;
   line-height: 1.3;
 `
 

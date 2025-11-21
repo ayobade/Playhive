@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Sidebar from '../Components/sidebar'
 import RightSidebar from '../Components/rightSidebar'
@@ -8,6 +8,9 @@ import TournamentCard from '../Components/tournamentcard'
 import TournamentFilters from '../Components/TournamentFilters'
 import { useSidebarState } from '../hooks/useSidebarState'
 import CreateTournamentModal from '../Components/CreateTournamentModal'
+import EmptyState from '../Components/EmptyState'
+import LoadingState from '../Components/LoadingState'
+import tournamentIcon from '../assets/tournament.svg'
 
 const Layout = styled.div`
   display: flex;
@@ -243,6 +246,22 @@ const AllTournament = () => {
   } = useSidebarState()
   const [activeTab, setActiveTab] = useState('all')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [allTournaments, setAllTournaments] = useState([])
+  const [myTournaments, setMyTournaments] = useState([])
+
+  useEffect(() => {
+    setIsLoading(true)
+    // Simulate API call
+    setTimeout(() => {
+      if (activeTab === 'all') {
+        setAllTournaments(tournamentsData) // Replace with actual API call
+      } else {
+        setMyTournaments([]) // Empty for demo - replace with actual data
+      }
+      setIsLoading(false)
+    }, 1000)
+  }, [activeTab])
 
   const toggleSidebar = () => toggleCollapsed()
   const closeSidebars = () => closeLeft()
@@ -250,6 +269,9 @@ const AllTournament = () => {
   const handleCreateTournament = () => {
     setIsModalOpen(false)
   }
+
+  const displayData = activeTab === 'all' ? allTournaments : myTournaments
+  const isEmpty = activeTab === 'mine' && !isLoading && myTournaments.length === 0
 
   return (
     <Layout>
@@ -274,21 +296,33 @@ const AllTournament = () => {
           </TabsLeft>
           <TournamentFilters />
         </Tabs>
-        <Grid>
-          {(activeTab==='all' ? tournamentsData : tournamentsData.slice(0,3)).map(t => (
-            <TournamentCard
-              key={t.id}
-              image={t.image}
-              title={t.title}
-              matchType={t.matchType}
-              date={t.date}
-              prizePoolValue={t.prizePoolValue}
-              entry={t.entry}
-              gameType={t.gameType}
-              teams={t.teams}
-            />
-          ))}
-        </Grid>
+        {isLoading ? (
+          <LoadingState type="skeleton" skeletonCount={6} />
+        ) : isEmpty ? (
+          <EmptyState
+            iconSrc={tournamentIcon}
+            title="No Tournaments Yet"
+            message="You haven't created any tournaments. Start by creating your first tournament!"
+            actionLabel="+ Create Tournament"
+            onAction={() => setIsModalOpen(true)}
+          />
+        ) : (
+          <Grid>
+            {displayData.map(t => (
+              <TournamentCard
+                key={t.id}
+                image={t.image}
+                title={t.title}
+                matchType={t.matchType}
+                date={t.date}
+                prizePoolValue={t.prizePoolValue}
+                entry={t.entry}
+                gameType={t.gameType}
+                teams={t.teams}
+              />
+            ))}
+          </Grid>
+        )}
       </Main>
       <RightSidebar isOpen={true} onClose={closeSidebars} />
     </Layout>

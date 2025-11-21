@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Sidebar from '../Components/sidebar'
 import RightSidebar from '../Components/rightSidebar'
 import MobileHeader from '../Components/MobileHeader'
 import { useSidebarState } from '../hooks/useSidebarState'
 import CreateOrganizationModal from '../Components/CreateOrganizationModal'
+import OrganizationFilters from '../Components/OrganizationFilters'
+import EmptyState from '../Components/EmptyState'
+import LoadingState from '../Components/LoadingState'
+import organizationsIcon from '../assets/organizations.svg'
 
 const Layout = styled.div`
   display: flex;
@@ -20,62 +24,84 @@ const Main = styled.main`
   padding: 40px;
   height: 100vh;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   transition: margin-left 0.3s ease, margin-right 0.3s ease;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
   
   @media (max-width: 1200px) {
     margin-left: 0;
     margin-right: 0;
     padding: 20px 20px;
-    padding-top: 140px;
+    padding-top: 180px;
   }
 `
 
-const PageTitle = styled.h1`
+const PageHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`
+
+const Title = styled.h1`
+  margin: 0;
   color: #FFFFFF;
-  margin: 0 0 20px 0;
   font-family: 'Orbitron', sans-serif;
-  font-size: 2rem;
   font-weight: 700;
+  font-size: 2rem;
   
   @media (max-width: 768px) {
     font-size: 1.5rem;
   }
 `
 
-const HeaderRow = styled.div`
+const Actions = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 16px;
-  margin-bottom: 24px;
 `
 
-const CreateButton = styled.button`
+const CreateBtn = styled.button`
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 20px;
-  background: #5C8D30;
-  color: #FFFFFF;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Inter', sans-serif;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #66B22E;
+  border: 1px solid #66B22E;
+  color: #0A0E12;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: #66B22E;
-    transform: translateY(-1px);
-    box-shadow: 0 8px 22px rgba(102, 178, 46, 0.28);
-  }
 `
 
-const PlusIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 5v14M5 12h14" />
-  </svg>
-)
+const Tabs = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+`
+
+const TabsLeft = styled.div`
+  display: flex;
+  gap: 32px;
+`
+
+const Tab = styled.button`
+  background: transparent;
+  border: none;
+  color: ${p => p.$active ? '#66B22E' : '#FFFFFF'};
+  opacity: ${p => p.$active ? 1 : 0.7};
+  font-weight: 700;
+  padding: 12px 0;
+  border-bottom: ${p => p.$active ? '3px solid #66B22E' : '3px solid transparent'};
+  cursor: pointer;
+`
+
 
 const Grid = styled.div`
   display: flex;
@@ -137,6 +163,12 @@ const SubText = styled.div`
   font-size: 0.95rem;
 `
 
+const initialOrgs = [
+  { id: 1, name: 'Bobby Swagger INC', logo: '/src/assets/community01.png', tournaments: 0 },
+  { id: 2, name: 'Bobby Swagger INC', logo: '/src/assets/community02.png', tournaments: 0 },
+  { id: 3, name: 'Bobby Swagger INC', logo: '/src/assets/community03.png', tournaments: 0 }
+]
+
 const Organization = () => {
   const {
     sidebarCollapsed: collapsed,
@@ -148,44 +180,78 @@ const Organization = () => {
 
   const toggleSidebar = () => toggleCollapsed()
   const closeSidebars = () => closeLeft()
+  const [activeTab, setActiveTab] = useState('all')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [allOrgs, setAllOrgs] = useState([])
+  const [myOrgs, setMyOrgs] = useState([])
 
-  const orgs = [
-    { id: 1, name: 'Bobby Swagger INC', logo: '/src/assets/community01.png', tournaments: 0 },
-    { id: 2, name: 'Bobby Swagger INC', logo: '/src/assets/community02.png', tournaments: 0 },
-    { id: 3, name: 'Bobby Swagger INC', logo: '/src/assets/community03.png', tournaments: 0 }
-  ]
-  const [orgModalOpen, setOrgModalOpen] = React.useState(false)
+  useEffect(() => {
+    setIsLoading(true)
+    // Simulate API call
+    setTimeout(() => {
+      if (activeTab === 'all') {
+        setAllOrgs(initialOrgs) // Replace with actual API call
+      } else {
+        setMyOrgs([]) // Empty for demo - replace with actual data
+      }
+      setIsLoading(false)
+    }, 1000)
+  }, [activeTab])
+
   const handleCreateOrg = () => {
-    setOrgModalOpen(false)
+    setIsModalOpen(false)
   }
+
+  const displayData = activeTab === 'all' ? allOrgs : myOrgs
+  const isEmpty = activeTab === 'mine' && !isLoading && myOrgs.length === 0
 
   return (
     <Layout>
       <CreateOrganizationModal
-        isOpen={orgModalOpen}
-        onClose={() => setOrgModalOpen(false)}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         onSubmit={handleCreateOrg}
       />
       <MobileHeader onMenuClick={() => openLeft()} />
       <Sidebar collapsed={collapsed} onToggle={toggleSidebar} isOpen={leftOpen} onClose={closeSidebars} />
       <Main $collapsed={collapsed}>
-        <HeaderRow>
-          <PageTitle style={{ marginBottom: 0 }}>Your Organizations</PageTitle>
-          <CreateButton onClick={() => setOrgModalOpen(true)}>
-            <PlusIcon /> Create New Organization
-          </CreateButton>
-        </HeaderRow>
-        <Grid>
-          {orgs.map((org, idx) => (
-            <Card key={org.id} $active={idx === 0}>
-              <Avatar>
-                <AvatarImg src={org.logo} alt={org.name} />
-              </Avatar>
-              <OrgName>{org.name}</OrgName>
-              <SubText $active={idx === 0}>Tournaments ({org.tournaments})</SubText>
-            </Card>
-          ))}
-        </Grid>
+        <PageHeader>
+          <Title>Organizations</Title>
+          <Actions>
+            <CreateBtn onClick={() => setIsModalOpen(true)}>+ Create Organization</CreateBtn>
+          </Actions>
+        </PageHeader>
+        <Tabs>
+          <TabsLeft>
+            <Tab $active={activeTab === 'all'} onClick={() => setActiveTab('all')}>All Organization</Tab>
+            <Tab $active={activeTab === 'mine'} onClick={() => setActiveTab('mine')}>My Organization</Tab>
+          </TabsLeft>
+          <OrganizationFilters />
+        </Tabs>
+        {isLoading ? (
+          <LoadingState type="skeleton" skeletonCount={6} cardType="organization" />
+        ) : isEmpty ? (
+          <EmptyState
+            iconSrc={organizationsIcon}
+            title="No Organizations Yet"
+            message="You haven't created any organizations. Start by creating your first organization!"
+            actionLabel="+ Create Organization"
+            onAction={() => setIsModalOpen(true)}
+          />
+        ) : (
+          <Grid>
+            {displayData.map((org, idx) => (
+              <Card key={org.id} $active={idx === 0 && activeTab === 'mine'}>
+                <Avatar>
+                  <AvatarImg src={org.logo} alt={org.name} />
+                </Avatar>
+                <OrgName>{org.name}</OrgName>
+                <SubText $active={idx === 0 && activeTab === 'mine'}>Tournaments ({org.tournaments})</SubText>
+              </Card>
+            ))}
+          </Grid>
+        )}
       </Main>
       <RightSidebar isOpen={true} onClose={closeSidebars} />
     </Layout>

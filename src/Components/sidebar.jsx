@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import homeIcon from '../assets/home.svg'
 import tournamentIcon from '../assets/tournament.svg'
@@ -71,7 +71,7 @@ const Logo = styled.div`
   font-weight: 700;
   padding: 0 30px;
   margin-bottom: 40px;
-  opacity: ${props => props.$collapsed ? '0' : '1'};
+  opacity: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '1'};
   transition: opacity 0.3s ease;
   white-space: nowrap;
   overflow: hidden;
@@ -94,9 +94,9 @@ const CollapsedLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: ${props => props.$collapsed ? '1' : '0'};
-  width: ${props => props.$collapsed ? 'auto' : '0'};
-  height: ${props => props.$collapsed ? 'auto' : '0'};
+  opacity: ${props => (props.$collapsed && !props.$isOpen) ? '1' : '0'};
+  width: ${props => (props.$collapsed && !props.$isOpen) ? 'auto' : '0'};
+  height: ${props => (props.$collapsed && !props.$isOpen) ? 'auto' : '0'};
   overflow: hidden;
   transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease;
   
@@ -121,7 +121,7 @@ const NavItem = styled(Link)`
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px ${props => props.$collapsed ? '12px' : '16px'};
+  padding: 12px ${props => (props.$collapsed && !props.$isOpen) ? '12px' : '16px'};
   border-radius: 0 12px 12px 0;
   text-decoration: none;
   color: #CCCCCC;
@@ -131,13 +131,13 @@ const NavItem = styled(Link)`
   transition: all 0.3s ease;
   position: relative;
   background: ${props => props.$active ? '#1A1E20' : 'transparent'};
-  margin-left: ${props => props.$active && !props.$collapsed ? '-20px' : '0'};
-  margin-right: ${props => props.$active && !props.$collapsed ? '-20px' : '0'};
-  padding-left: ${props => props.$active && !props.$collapsed ? '36px' : props.$collapsed ? '12px' : '16px'};
-  border-radius: ${props => props.$active && !props.$collapsed ? '0' : '0 12px 12px 0'};
-  justify-content: ${props => props.$collapsed ? 'center' : 'flex-start'};
+  margin-left: ${props => props.$active && !(props.$collapsed && !props.$isOpen) ? '-20px' : '0'};
+  margin-right: ${props => props.$active && !(props.$collapsed && !props.$isOpen) ? '-20px' : '0'};
+  padding-left: ${props => props.$active && !(props.$collapsed && !props.$isOpen) ? '36px' : (props.$collapsed && !props.$isOpen) ? '12px' : '16px'};
+  border-radius: ${props => props.$active && !(props.$collapsed && !props.$isOpen) ? '0' : '0 12px 12px 0'};
+  justify-content: ${props => (props.$collapsed && !props.$isOpen) ? 'center' : 'flex-start'};
   
-  ${props => props.$active && props.$collapsed && `
+  ${props => props.$active && (props.$collapsed && !props.$isOpen) && `
     margin-left: -20px;
     margin-right: -20px;
     border-radius: 0;
@@ -150,8 +150,8 @@ const NavItem = styled(Link)`
   }
   
   span {
-    opacity: ${props => props.$collapsed ? '0' : '1'};
-    width: ${props => props.$collapsed ? '0' : 'auto'};
+    opacity: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '1'};
+    width: ${props => (props.$collapsed && !props.$isOpen) ? '0' : 'auto'};
     overflow: hidden;
     white-space: nowrap;
     transition: opacity 0.3s ease, width 0.3s ease;
@@ -189,8 +189,8 @@ const IconImage = styled.img`
 const CTACard = styled.div`
   background: #66B22E;
   border-radius: 12px;
-  padding: ${props => props.$collapsed ? '12px' : '20px'};
-  margin: 20px ${props => props.$collapsed ? '12px' : '20px'} 30px ${props => props.$collapsed ? '12px' : '20px'};
+  padding: ${props => (props.$collapsed && !props.$isOpen) ? '12px' : '20px'};
+  margin: 20px ${props => (props.$collapsed && !props.$isOpen) ? '12px' : '20px'} 30px ${props => (props.$collapsed && !props.$isOpen) ? '12px' : '20px'};
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -211,18 +211,18 @@ const CTAText = styled.p`
   font-weight: 600;
   margin: 0;
   line-height: 1.4;
-  opacity: ${props => props.$collapsed ? '0' : '1'};
-  width: ${props => props.$collapsed ? '0' : 'auto'};
-  height: ${props => props.$collapsed ? '0' : 'auto'};
+  opacity: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '1'};
+  width: ${props => (props.$collapsed && !props.$isOpen) ? '0' : 'auto'};
+  height: ${props => (props.$collapsed && !props.$isOpen) ? '0' : 'auto'};
   overflow: hidden;
   white-space: nowrap;
   transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease;
 `
 
 const CTAIcon = styled.div`
-  position: ${props => props.$collapsed ? 'relative' : 'absolute'};
-  top: ${props => props.$collapsed ? '0' : '16px'};
-  right: ${props => props.$collapsed ? '0' : '16px'};
+  position: ${props => (props.$collapsed && !props.$isOpen) ? 'relative' : 'absolute'};
+  top: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '16px'};
+  right: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '16px'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,11 +237,11 @@ const CTAIcon = styled.div`
 const UserSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${props => props.$collapsed ? '0' : '12px'};
-  padding: 16px ${props => props.$collapsed ? '20px' : '30px'};
+  gap: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '12px'};
+  padding: 16px ${props => (props.$collapsed && !props.$isOpen) ? '20px' : '30px'};
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: auto;
-  justify-content: ${props => props.$collapsed ? 'center' : 'flex-start'};
+  justify-content: ${props => (props.$collapsed && !props.$isOpen) ? 'center' : 'flex-start'};
 `
 
 const UserAvatar = styled.div`
@@ -256,8 +256,8 @@ const UserAvatar = styled.div`
   font-weight: 600;
   font-size: 0.9rem;
   flex-shrink: 0;
-  opacity: ${props => props.$collapsed ? '0' : '1'};
-  width: ${props => props.$collapsed ? '0' : '40px'};
+  opacity: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '1'};
+  width: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '40px'};
   overflow: hidden;
   transition: opacity 0.3s ease, width 0.3s ease;
 `
@@ -266,8 +266,8 @@ const UserInfo = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  opacity: ${props => props.$collapsed ? '0' : '1'};
-  width: ${props => props.$collapsed ? '0' : 'auto'};
+  opacity: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '1'};
+  width: ${props => (props.$collapsed && !props.$isOpen) ? '0' : 'auto'};
   overflow: hidden;
   transition: opacity 0.3s ease, width 0.3s ease;
 `
@@ -283,15 +283,20 @@ const LogoutButton = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #CCCCCC;
   transition: all 0.3s ease;
+  border-radius: 8px;
+  opacity: ${props => (props.$collapsed && !props.$isOpen) ? '0' : '1'};
+  width: ${props => (props.$collapsed && !props.$isOpen) ? '0' : 'auto'};
+  overflow: hidden;
   
   &:hover {
     color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.05);
   }
   
   svg {
@@ -371,6 +376,7 @@ const CloseIcon = () => (
 
 const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
     const location = useLocation()
+    const navigate = useNavigate()
 
     const handleToggle = () => {
         // On smaller screens (< 1200px), the toggle button should close the sidebar
@@ -383,44 +389,50 @@ const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
         }
     }
 
+    const handleLogout = () => {
+        // Add any logout logic here (clear tokens, reset state, etc.)
+        // For now, just navigate to login page
+        navigate('/login')
+    }
+
     return (
         <SidebarContainer $collapsed={collapsed} $isOpen={isOpen}>
             <ToggleButton $collapsed={collapsed} onClick={handleToggle}>
                 <ChevronLeftIcon />
             </ToggleButton>
             
-            <Logo $collapsed={collapsed}>
+            <Logo $collapsed={collapsed} $isOpen={isOpen}>
                 <span className="play">Play</span>
                 <span className="hive">Hive</span>
             </Logo>
             
-            <CollapsedLogo $collapsed={collapsed}>
+            <CollapsedLogo $collapsed={collapsed} $isOpen={isOpen}>
                 <span className="p">P</span>
                 <span className="h">H</span>
             </CollapsedLogo>
             
             <NavList>
-                <NavItem to="/dashboard" $active={location.pathname === '/dashboard'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
+                <NavItem to="/dashboard" $active={location.pathname === '/dashboard'} $collapsed={collapsed} $isOpen={isOpen} onClick={() => onClose && onClose()}>
                     <IconImage src={homeIcon} alt="Home" $active={location.pathname === '/dashboard'} />
                     <span>Home</span>
                 </NavItem>
-                <NavItem to="/allTournament" $active={location.pathname === '/allTournament'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
+                <NavItem to="/allTournament" $active={location.pathname === '/allTournament'} $collapsed={collapsed} $isOpen={isOpen} onClick={() => onClose && onClose()}>
                     <IconImage src={tournamentIcon} alt="Tournaments" $active={location.pathname === '/allTournament'} />
                     <span>Tournaments</span>
                 </NavItem>
-                <NavItem to="/organization" $active={location.pathname === '/organization'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
+                <NavItem to="/organization" $active={location.pathname === '/organization'} $collapsed={collapsed} $isOpen={isOpen} onClick={() => onClose && onClose()}>
                     <IconImage src={organizationsIcon} alt="Organizations" $active={location.pathname === '/organization'} />
                     <span>Organizations</span>
                 </NavItem>
-                <NavItem to="/community" $active={location.pathname === '/community'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
+                <NavItem to="/community" $active={location.pathname === '/community'} $collapsed={collapsed} $isOpen={isOpen} onClick={() => onClose && onClose()}>
                     <IconImage src={communityIcon} alt="Community" $active={location.pathname === '/community'} />
                     <span>Community</span>
                 </NavItem>
-                <NavItem to="/leaderboard" $active={location.pathname === '/leaderboard'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
+                <NavItem to="/leaderboard" $active={location.pathname === '/leaderboard'} $collapsed={collapsed} $isOpen={isOpen} onClick={() => onClose && onClose()}>
                     <IconImage src={leaderboardIcon} alt="Leaderboard" $active={location.pathname === '/leaderboard'} />
                     <span>Leaderboard</span>
                 </NavItem>
-                <NavItem to="/streams" $active={location.pathname === '/streams'} $collapsed={collapsed} onClick={() => onClose && onClose()}>
+                <NavItem to="/streams" $active={location.pathname === '/streams'} $collapsed={collapsed} $isOpen={isOpen} onClick={() => onClose && onClose()}>
                     <IconImage src={streamsIcon} alt="Streams" $active={location.pathname === '/streams'} />
                     <span>Streams</span>
                 </NavItem>
@@ -428,6 +440,7 @@ const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
                     to="/subscriptions" 
                     $active={location.pathname === '/subscriptions'}
                     $collapsed={collapsed}
+                    $isOpen={isOpen}
                     onClick={() => onClose && onClose()}
                 >
                     <IconImage src={subscriptionsIcon} alt="Subscriptions" $active={location.pathname === '/subscriptions'} />
@@ -435,21 +448,26 @@ const Sidebar = ({ collapsed, onToggle, isOpen = true, onClose }) => {
                 </NavItem>
             </NavList>
             
-            <CTACard $collapsed={collapsed}>
-                <CTAText $collapsed={collapsed}>
+            <CTACard $collapsed={collapsed} $isOpen={isOpen}>
+                <CTAText $collapsed={collapsed} $isOpen={isOpen}>
                     Join the PlayHive<br />Community!
                 </CTAText>
-                <CTAIcon $collapsed={collapsed}>
+                <CTAIcon $collapsed={collapsed} $isOpen={isOpen}>
                     <ExternalLinkIcon />
                 </CTAIcon>
             </CTACard>
             
-            <UserSection $collapsed={collapsed}>
-                <UserAvatar $collapsed={collapsed}>BS</UserAvatar>
-                <UserInfo $collapsed={collapsed}>
+            <UserSection $collapsed={collapsed} $isOpen={isOpen}>
+                <UserAvatar $collapsed={collapsed} $isOpen={isOpen}>BS</UserAvatar>
+                <UserInfo $collapsed={collapsed} $isOpen={isOpen}>
                     <Username>Bobby Swagger</Username>
                 </UserInfo>
-                <LogoutButton>
+                <LogoutButton 
+                    $collapsed={collapsed} 
+                    $isOpen={isOpen}
+                    onClick={handleLogout}
+                    title="Logout"
+                >
                     <LogoutIcon />
                 </LogoutButton>
             </UserSection>

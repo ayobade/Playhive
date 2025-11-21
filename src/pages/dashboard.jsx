@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import Sidebar from '../Components/sidebar'
 import RightSidebar from '../Components/rightSidebar'
 import gtaVI from '../assets/GTA VI.png'
@@ -1247,6 +1248,42 @@ const ViewAllButton = styled.button`
   }
 `
 
+const ViewAllLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 9999px;
+  border: 1px solid #66B22E;
+  background: rgba(102, 178, 46, 0.15);
+  color: #66B22E;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+  }
+  
+  &:hover {
+    background: #66B22E;
+    color: #0A0E12;
+  }
+  
+  &:active {
+    transform: scale(0.97);
+  }
+  
+  @media (max-width: 768px) {
+    align-self: flex-start;
+  }
+`
+
 const LiveStreamsGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -1629,12 +1666,12 @@ const DashboardPage = () => {
                 <LiveStreamsSection>
                     <LiveStreamsHeader>
                         <LiveStreamsTitle>LiveStreams</LiveStreamsTitle>
-                <ViewAllButton>
+                <ViewAllLink to="/streams">
                     View All
                     <svg viewBox="0 0 24 24">
                         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
                     </svg>
-                </ViewAllButton>
+                </ViewAllLink>
                     </LiveStreamsHeader>
                     <LiveStreamsGrid>
                         {livestreamsData.slice(0, 3).map((stream) => (
@@ -1653,12 +1690,12 @@ const DashboardPage = () => {
                 <CommunitiesSection>
                     <CommunitiesHeader>
                         <CommunitiesTitle>Communities</CommunitiesTitle>
-                <ViewAllButton>
+                <ViewAllLink to="/community">
                     View All
                     <svg viewBox="0 0 24 24">
                         <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
                     </svg>
-                </ViewAllButton>
+                </ViewAllLink>
                     </CommunitiesHeader>
                     <CommunitiesGrid>
                         {communitiesData.slice(0, 6).map((community) => (

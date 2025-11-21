@@ -18,6 +18,15 @@ const CommunityCardContainer = styled.div`
   max-width: 615px;
   width: 100%;
   overflow: hidden;
+  flex: 1 1 calc((100% - 24px) / 2);
+  
+  @media (max-width: 1494px) {
+    flex: 1 1 calc((100% - 24px) / 2);
+  }
+  
+  @media (max-width: 800px) {
+    flex: 1 1 100%;
+  }
   
   &::after {
     content: '';
