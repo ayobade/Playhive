@@ -11,6 +11,7 @@ import Community from './pages/community'
 import Streams from './pages/streams'
 import Leaderboard from './pages/leaderboard'
 import Subscriptions from './pages/subscriptions'
+import AboutUs from './pages/aboutus'
 import styled from 'styled-components'
 import overSvg from './assets/over.svg'
 
@@ -64,6 +65,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tournaments" element={<Tournaments />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />

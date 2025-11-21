@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useEffect, useRef, useState } from 'react'
+import styled, { keyframes } from 'styled-components'
 import div1 from '../assets/Div1.png'
 import div2 from '../assets/Div2.png'
 import div3 from '../assets/Div3.png'
@@ -23,6 +23,60 @@ import live03 from '../assets/live03.png'
 import Footer from './footer'
 import LivestreamCard from './livestreamcard'
 
+// Animation keyframes
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`
+
+const fadeInScale = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
+// Custom hook for Intersection Observer
+const useIntersectionObserver = (ref, options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsIntersecting(true)
+        observer.disconnect()
+      }
+    }, { threshold: 0.1, ...options })
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [ref, options])
+
+  return isIntersecting
+}
+
 const BodyContainer = styled.section`
   padding: 100px 20px;
   max-width: 1200px;
@@ -41,6 +95,8 @@ const SectionTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   max-width: 700px;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInUp : 'none'} 0.8s ease-out;
  
   
   @media (max-width: 768px) {
@@ -89,6 +145,9 @@ const BentoCard = styled.div`
   min-height: 475px;
   width: 100%;
   height: 100%;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.6s ease-out both;
+  animation-delay: ${props => props.$delay || 0}s;
   
   
   &:nth-child(1) {
@@ -186,6 +245,8 @@ const LiveTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   max-width: 700px;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInUp : 'none'} 0.8s ease-out;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -211,6 +272,12 @@ const LiveGrid = styled.div`
   }
 `
 
+const LiveCardWrapper = styled.div`
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.6s ease-out both;
+  animation-delay: ${props => props.$delay || 0}s;
+`
+
 
 const ClientsSection = styled.section`
   margin-top: 120px;
@@ -226,6 +293,8 @@ const ClientsTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   max-width: 800px;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInUp : 'none'} 0.8s ease-out;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -262,6 +331,9 @@ const ClientCard = styled.div`
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.6s ease-out both;
+  animation-delay: ${props => props.$delay || 0}s;
   
   &:hover {
     transform: translateY(-5px);
@@ -348,6 +420,8 @@ const FaqCard = styled.div`
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.8s ease-out;
 
   &::before {
     content: '';
@@ -450,6 +524,8 @@ const NewsletterCard = styled.div`
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.8s ease-out;
 
   &::before {
     content: '';
@@ -541,6 +617,8 @@ const MajorGamesTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   max-width: 400px;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInUp : 'none'} 0.8s ease-out;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -595,6 +673,9 @@ const GameCard = styled.div`
   overflow: hidden;
   width: 200px;
   height: 300px;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.5s ease-out both;
+  animation-delay: ${props => props.$delay || 0}s;
   
   &:hover {
     transform: translateY(-5px);
@@ -634,6 +715,8 @@ const UpcomingTournamentsTitle = styled.h2`
   text-transform: uppercase;
   letter-spacing: 2px;
   max-width: 500px;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInUp : 'none'} 0.8s ease-out;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -676,6 +759,9 @@ const TournamentCard = styled.div`
   aspect-ratio: 16 / 9;
   transition: all 0.3s ease;
   cursor: pointer;
+  opacity: ${props => props.$visible ? 1 : 0};
+  animation: ${props => props.$visible ? fadeInScale : 'none'} 0.6s ease-out both;
+  animation-delay: ${props => props.$delay || 0}s;
   
   &:hover {
     transform: translateY(-5px);
@@ -851,6 +937,25 @@ const NavigationButton = styled.button`
 
 const Body = () => {
     const [openFaq, setOpenFaq] = React.useState(0)
+    
+    // Refs for intersection observers
+    const bentoSectionRef = useRef(null)
+    const gamesSectionRef = useRef(null)
+    const tournamentsSectionRef = useRef(null)
+    const liveSectionRef = useRef(null)
+    const clientsSectionRef = useRef(null)
+    const faqSectionRef = useRef(null)
+    const newsletterSectionRef = useRef(null)
+    
+    // Intersection observers
+    const isBentoVisible = useIntersectionObserver(bentoSectionRef, { threshold: 0.1 })
+    const isGamesVisible = useIntersectionObserver(gamesSectionRef, { threshold: 0.1 })
+    const isTournamentsVisible = useIntersectionObserver(tournamentsSectionRef, { threshold: 0.1 })
+    const isLiveVisible = useIntersectionObserver(liveSectionRef, { threshold: 0.1 })
+    const isClientsVisible = useIntersectionObserver(clientsSectionRef, { threshold: 0.1 })
+    const isFaqVisible = useIntersectionObserver(faqSectionRef, { threshold: 0.1 })
+    const isNewsletterVisible = useIntersectionObserver(newsletterSectionRef, { threshold: 0.1 })
+    
     const faqs = [
         {
             q: 'What is PlayHive?',
@@ -868,75 +973,52 @@ const Body = () => {
 
     return (
         <BodyContainer>
-            <SectionTitle>Everything you need. All in one place!</SectionTitle>
-            <BentoGrid>
-                <BentoCard>
-                    <CardImage src={div1} alt="Tournament Hosting" />
-                    <CardTitle>Tournament Hosting</CardTitle>
-                    <CardDescription>Easily create, manage, and customize your own e-sports tournaments.</CardDescription>
-                </BentoCard>
-                <BentoCard>
-                    <CardImage src={div2} alt="Compete & Win" />
-                    <CardTitle>Compete & Win</CardTitle>
-                    <CardDescription>Join high-stakes competitions and prove your skills.</CardDescription>
-                </BentoCard>
-                <BentoCard>
-                    <CardImage src={div3} alt="Real Prizes & Rewards" />
-                    <CardTitle>Real Prizes & Rewards</CardTitle>
-                    <CardDescription>Cash prizes, exclusive rewards, and leaderboard dominance.</CardDescription>
-                </BentoCard>
-                <BentoCard>
-                    <CardImage src={div4} alt="Play your favorite games" />
-                    <CardTitle>Play your favorite games</CardTitle>
-                    <CardDescription>Bring your data with our built-in integrations for accounting, revenue tools and banking.</CardDescription>
-                </BentoCard>
-                <BentoCard>
-                    <CardImage src={div5} alt="Community & Teams" />
-                    <CardTitle>Community & Teams</CardTitle>
-                    <CardDescription>Connect, team up, and challenge top players worldwide.</CardDescription>
-                </BentoCard>
-            </BentoGrid>
+            <div ref={bentoSectionRef}>
+                <SectionTitle $visible={isBentoVisible}>Everything you need. All in one place!</SectionTitle>
+                <BentoGrid>
+                    <BentoCard $visible={isBentoVisible} $delay={0}>
+                        <CardImage src={div1} alt="Tournament Hosting" />
+                        <CardTitle>Tournament Hosting</CardTitle>
+                        <CardDescription>Easily create, manage, and customize your own e-sports tournaments.</CardDescription>
+                    </BentoCard>
+                    <BentoCard $visible={isBentoVisible} $delay={0.1}>
+                        <CardImage src={div2} alt="Compete & Win" />
+                        <CardTitle>Compete & Win</CardTitle>
+                        <CardDescription>Join high-stakes competitions and prove your skills.</CardDescription>
+                    </BentoCard>
+                    <BentoCard $visible={isBentoVisible} $delay={0.2}>
+                        <CardImage src={div3} alt="Real Prizes & Rewards" />
+                        <CardTitle>Real Prizes & Rewards</CardTitle>
+                        <CardDescription>Cash prizes, exclusive rewards, and leaderboard dominance.</CardDescription>
+                    </BentoCard>
+                    <BentoCard $visible={isBentoVisible} $delay={0.3}>
+                        <CardImage src={div4} alt="Play your favorite games" />
+                        <CardTitle>Play your favorite games</CardTitle>
+                        <CardDescription>Bring your data with our built-in integrations for accounting, revenue tools and banking.</CardDescription>
+                    </BentoCard>
+                    <BentoCard $visible={isBentoVisible} $delay={0.4}>
+                        <CardImage src={div5} alt="Community & Teams" />
+                        <CardTitle>Community & Teams</CardTitle>
+                        <CardDescription>Connect, team up, and challenge top players worldwide.</CardDescription>
+                    </BentoCard>
+                </BentoGrid>
+            </div>
             
-            <MajorGamesSection>
-                <MajorGamesTitle>All Major Games</MajorGamesTitle>
+            <MajorGamesSection ref={gamesSectionRef}>
+                <MajorGamesTitle $visible={isGamesVisible}>All Major Games</MajorGamesTitle>
                 <GamesGrid>
-                    <GameCard>
-                        <GameImage src={game01} alt="Game 1" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game02} alt="Game 2" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game03} alt="Game 3" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game04} alt="Game 4" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game05} alt="Game 5" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game06} alt="Game 6" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game07} alt="Game 7" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game08} alt="Game 8" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game09} alt="Game 9" />
-                    </GameCard>
-                    <GameCard>
-                        <GameImage src={game10} alt="Game 10" />
-                    </GameCard>
+                    {[game01, game02, game03, game04, game05, game06, game07, game08, game09, game10].map((game, index) => (
+                        <GameCard key={index} $visible={isGamesVisible} $delay={index * 0.05}>
+                            <GameImage src={game} alt={`Game ${index + 1}`} />
+                        </GameCard>
+                    ))}
                 </GamesGrid>
             </MajorGamesSection>
             
-<UpcomingTournamentsSection>
-                <UpcomingTournamentsTitle>Upcoming Tournaments</UpcomingTournamentsTitle>
+<UpcomingTournamentsSection ref={tournamentsSectionRef}>
+                <UpcomingTournamentsTitle $visible={isTournamentsVisible}>Upcoming Tournaments</UpcomingTournamentsTitle>
                 <TournamentsContainer>
-                    <TournamentCard>
+                    <TournamentCard $visible={isTournamentsVisible} $delay={0}>
                         <TournamentImage src={tournament01} alt="Call of Duty Tournament" />
                         <TournamentOverlay>
                             <RegistrationBadge>Registration Ongoing</RegistrationBadge>
@@ -949,7 +1031,7 @@ const Body = () => {
                             </TournamentBottom>
                         </TournamentOverlay>
                     </TournamentCard>
-                    <TournamentCard>
+                    <TournamentCard $visible={isTournamentsVisible} $delay={0.2}>
                         <TournamentImage src={tournament02} alt="Valorant Tournament" />
                         <TournamentOverlay>
                             <RegistrationBadge>Registration Ongoing</RegistrationBadge>
@@ -986,30 +1068,36 @@ const Body = () => {
                 </PaginationContainer>
             </UpcomingTournamentsSection>
 
-            <LiveSection>
-                <LiveTitle>Watch Live Streams</LiveTitle>
+            <LiveSection ref={liveSectionRef}>
+                <LiveTitle $visible={isLiveVisible}>Watch Live Streams</LiveTitle>
                 <LiveGrid>
-                    <LivestreamCard 
-                        thumbnail={live01}
-                        alt="FC25 stream"
-                        streamer="Bobby Swagger"
-                        title="FC25 – FC Pro Open match week 5 Reimagined"
-                        viewers="10,000"
-                    />
-                    <LivestreamCard 
-                        thumbnail={live02}
-                        alt="Call of Duty stream"
-                        streamer="Bobby Swagger"
-                        title="Call of Duty – Mordern Warfare Reimagined"
-                        viewers="10,000"
-                    />
-                    <LivestreamCard 
-                        thumbnail={live03}
-                        alt="Apex stream"
-                        streamer="Bobby Swagger"
-                        title="FC25 – FC Pro Open match week 5 Reimagined"
-                        viewers="10,000"
-                    />
+                    <LiveCardWrapper $visible={isLiveVisible} $delay={0}>
+                        <LivestreamCard 
+                            thumbnail={live01}
+                            alt="FC25 stream"
+                            streamer="Bobby Swagger"
+                            title="FC25 – FC Pro Open match week 5 Reimagined"
+                            viewers="10,000"
+                        />
+                    </LiveCardWrapper>
+                    <LiveCardWrapper $visible={isLiveVisible} $delay={0.15}>
+                        <LivestreamCard 
+                            thumbnail={live02}
+                            alt="Call of Duty stream"
+                            streamer="Bobby Swagger"
+                            title="Call of Duty – Mordern Warfare Reimagined"
+                            viewers="10,000"
+                        />
+                    </LiveCardWrapper>
+                    <LiveCardWrapper $visible={isLiveVisible} $delay={0.3}>
+                        <LivestreamCard 
+                            thumbnail={live03}
+                            alt="Apex stream"
+                            streamer="Bobby Swagger"
+                            title="FC25 – FC Pro Open match week 5 Reimagined"
+                            viewers="10,000"
+                        />
+                    </LiveCardWrapper>
                 </LiveGrid>
                 <PaginationContainer>
                     <PaginationDashes>
@@ -1034,10 +1122,10 @@ const Body = () => {
                 </PaginationContainer>
             </LiveSection>
             
-            <ClientsSection>
-                <ClientsTitle>Our Clients Experience</ClientsTitle>
+            <ClientsSection ref={clientsSectionRef}>
+                <ClientsTitle $visible={isClientsVisible}>Our Clients Experience</ClientsTitle>
                 <ClientsGrid>
-                    <ClientCard>
+                    <ClientCard $visible={isClientsVisible} $delay={0}>
                         <ClientHeader>
                             <ClientAvatar />
                             <ClientMeta>
@@ -1052,7 +1140,7 @@ const Body = () => {
                             Playhive has transformed how we organize tournaments. The tools are intuitive and the experience is seamless for our players and viewers.
                         </Quote>
                     </ClientCard>
-                    <ClientCard>
+                    <ClientCard $visible={isClientsVisible} $delay={0.15}>
                         <ClientHeader>
                             <ClientAvatar />
                             <ClientMeta>
@@ -1067,7 +1155,7 @@ const Body = () => {
                             The live streaming integration and community features are top-notch. My audience engagement has never been better.
                         </Quote>
                     </ClientCard>
-                    <ClientCard>
+                    <ClientCard $visible={isClientsVisible} $delay={0.3}>
                         <ClientHeader>
                             <ClientAvatar />
                             <ClientMeta>
@@ -1106,9 +1194,9 @@ const Body = () => {
                 </PaginationContainer>
             </ClientsSection>
             
-            <FaqSection>
-                <FaqCard>
-                    <FaqTitle>FAQ’s</FaqTitle>
+            <FaqSection ref={faqSectionRef}>
+                <FaqCard $visible={isFaqVisible}>
+                    <FaqTitle>FAQ's</FaqTitle>
                     <FaqIntro>Explore our FAQ to get all the buzz about PlayHive – from hosting tournaments to joining the action!</FaqIntro>
                     {faqs.map((item, idx) => (
                         <FaqItem key={idx}>
@@ -1126,8 +1214,8 @@ const Body = () => {
                 </FaqCard>
             </FaqSection>
             
-            <NewsletterSection>
-                <NewsletterCard>
+            <NewsletterSection ref={newsletterSectionRef}>
+                <NewsletterCard $visible={isNewsletterVisible}>
                     <NewsletterTitle>Subscribe To Our Newsletter</NewsletterTitle>
                     <NewsletterForm onSubmit={(e) => e.preventDefault()}>
                         <InputWrapper>

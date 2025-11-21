@@ -1,11 +1,43 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import heroImage from '../assets/Hero-img.png'
 import tournamentLogo1 from '../assets/featured1.png'
 import tournamentLogo2 from '../assets/featured2.png'
 import tournamentLogo3 from '../assets/featured3.png'
 import tournamentLogo4 from '../assets/featured4.png'
+
+// Animation keyframes
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`
 
 
 
@@ -32,22 +64,22 @@ const Hero = () => {
         <FeaturedSection>
             <SectionTitle>Featured Tournaments</SectionTitle>
             <TournamentLogos>
-                <TournamentLogo>
+                <TournamentLogo $delay={0.1}>
                     <img src={tournamentLogo1} alt="ePremier League" />
                 </TournamentLogo>
-                <TournamentLogo>
+                <TournamentLogo $delay={0.2}>
                     <img src={tournamentLogo2} alt="NHL 23 World Championship" />
                 </TournamentLogo>
-                <TournamentLogo>
+                <TournamentLogo $delay={0.3}>
                     <img src={tournamentLogo1} alt="ePremier League" />
                 </TournamentLogo>
-                <TournamentLogo>
+                <TournamentLogo $delay={0.4}>
                     <img src={tournamentLogo3} alt="ZOTAC CUP" />
                 </TournamentLogo>
-                <TournamentLogo>
+                <TournamentLogo $delay={0.5}>
                     <img src={tournamentLogo1} alt="ePremier League" />
                 </TournamentLogo>
-                <TournamentLogo>
+                <TournamentLogo $delay={0.6}>
                     <img src={tournamentLogo4} alt="APEX LEGENDS Global Series" />
                 </TournamentLogo>
             </TournamentLogos>
@@ -80,6 +112,7 @@ const MainHeadline = styled.h1`
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 2px;
+  animation: ${fadeInUp} 1s ease-out;
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
@@ -99,6 +132,7 @@ const Description = styled.p`
   margin: 0 0 50px 0;
   line-height: 1.6;
   max-width: 800px;
+  animation: ${fadeInUp} 1s ease-out 0.2s both;
   
   @media (max-width: 768px) {
     font-size: 1.1rem;
@@ -122,6 +156,7 @@ const CTAButton = styled(Link)`
   transition: all 0.3s ease;
   text-decoration: none;
   display: inline-block;
+  animation: ${fadeInUp} 1s ease-out 0.4s both;
   
   &:hover {
     background: #66B22E;
@@ -135,9 +170,9 @@ const HeroImage = styled.img`
   height: 750px;
   object-fit: cover;
   border-radius: 20px;
-  
   margin-top: 40px;
   transition: transform 0.3s ease;
+  animation: ${scaleIn} 1.2s ease-out 0.6s both;
   
   &:hover {
     transform: scale(1.02);
@@ -179,6 +214,7 @@ const SectionTitle = styled.h2`
   margin-bottom: 60px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  animation: ${fadeInUp} 0.8s ease-out;
   
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -218,6 +254,8 @@ const TournamentLogo = styled.div`
   padding: 15px 20px;
   transition: all 0.3s ease;
   cursor: pointer;
+  animation: ${fadeInUp} 0.6s ease-out both;
+  animation-delay: ${props => props.$delay || 0}s;
   
   img {
     max-height: 88px;
@@ -228,7 +266,7 @@ const TournamentLogo = styled.div`
   }
   
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) scale(1.05);
   }
   
   @media (max-width: 768px) {
